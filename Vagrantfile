@@ -42,9 +42,9 @@ Vagrant.configure(2) do |config|
       yum install -y git
       cd /root
       git clone https://github.com/glarizza/pe_curl_requests.git
-      DOWNLOAD_VERSION=2017.3.1 pe_curl_requests/installer/download_pe_tarball.sh
+      DOWNLOAD_VERSION=2017.3.1 pe_curl_requests/installer/download_pe_tarball.sh >/dev/null
       tar xf puppet-enterprise-2017.3.1-el-7-x86_64.tar.gz
-      cd puppet-enterprise-2017.3.1-el-7-x86_66
+      cd puppet-enterprise-2017.3.1-el-7-x86_64
       cat <<-EOF > pe.conf
 {
   "console_admin_password": "puppet2017"
