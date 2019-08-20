@@ -28,6 +28,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "primary", primary: true do |master|
     master.vm.hostname = "primary.localdomain"
     master.vm.network "private_network", ip: "192.168.50.20"
+    master.vm.network "forwarded_port", guest: 443, host: 8443
 
     master.vm.provider "virtualbox" do |vb|
       vb.name   = "primary"
@@ -81,7 +82,7 @@ EOF
       /opt/puppetlabs/bin/puppet resource host replica.localdomain ip=192.168.50.21
       /opt/puppetlabs/bin/puppet config set server primary.localdomain --section agent
       curl -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- --puppet-service-ensure stopped
-      /opt/puppetlabs/bin/puppet agent -t --waitforcert 60
+      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose --waitforcert 60
     SHELL
   end
 end
