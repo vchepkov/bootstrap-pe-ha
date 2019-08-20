@@ -42,7 +42,7 @@ Vagrant.configure(2) do |config|
       yum install -y git
       cd /root
       git clone https://github.com/glarizza/pe_curl_requests.git
-      DOWNLOAD_VERSION=2017.3.1 pe_curl_requests/installer/download_pe_tarball.sh >/dev/null
+      DOWNLOAD_VERSION=2017.3.1 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
       tar xf puppet-enterprise-2017.3.1-el-7-x86_64.tar.gz
       cd puppet-enterprise-2017.3.1-el-7-x86_64
       cat <<-EOF > pe.conf
@@ -57,7 +57,7 @@ EOF
       /opt/puppetlabs/bin/puppet resource host primary.localdomain ip=192.168.50.20
       /opt/puppetlabs/bin/puppet resource host replica.localdomain ip=192.168.50.21
       echo '*' > /etc/puppetlabs/puppet/autosign.conf
-      /opt/puppetlabs/bin/puppet agent -t 
+      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
     SHELL
   end
 
