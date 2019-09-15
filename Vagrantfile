@@ -12,10 +12,18 @@ Vagrant.configure(2) do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
+  config.vagrant.plugins = "vagrant-hosts"
+
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box      = "centos/7"
   config.vm.synced_folder ".", "/vagrant"
+
+  config.vm.provision :hosts do |h|
+    h.add_localhost_hostnames = false
+    h.add_host '192.168.50.20', ['primary.localdomain', 'primary']
+    h.add_host '192.168.50.21', ['replica.localdomain', 'replica']
+  end
 
   config.vm.provider :virtualbox do |vb|
     vb.auto_nat_dns_proxy = false
@@ -32,33 +40,39 @@ Vagrant.configure(2) do |config|
 
     master.vm.provider "virtualbox" do |vb|
       vb.name   = "primary"
-      vb.memory = "4096"
+      vb.memory = "6144"
       vb.cpus   = "2"
     end
 
-    master.vm.provision "shell", run: "once", inline: <<-SHELL
+    master.vm.provision "shell", inline: <<-SHELL
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
       yum install -y git
       cd /root
       git clone https://github.com/glarizza/pe_curl_requests.git
-      DOWNLOAD_VERSION=2017.3.1 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
-      tar xf puppet-enterprise-2017.3.1-el-7-x86_64.tar.gz
-      cd puppet-enterprise-2017.3.1-el-7-x86_64
+      DOWNLOAD_VERSION=2018.1.9 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
+      tar xf puppet-enterprise-2018.1.9-el-7-x86_64.tar.gz
+      cd puppet-enterprise-2018.1.9-el-7-x86_64
       cat <<-EOF > pe.conf
 {
-  "console_admin_password": "puppet2017"
+  "console_admin_password": "puppet2018"
+  "pe_install::disable_mco": false
+  "puppet_enterprise::send_analytics_data": false
+  "puppet_enterprise::ssl_protocols": ["TLSv1.2"]
   "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
   "puppet_enterprise::profile::master::code_manager_auto_configure": true
   "puppet_enterprise::profile::master::r10k_remote": "https://github.com/vchepkov/bootstrap-pe-ha.git"
+  "puppet_enterprise::profile::master::check_for_updates": false
 }
 EOF
       ./puppet-enterprise-installer -y -c pe.conf
-      /opt/puppetlabs/bin/puppet resource host primary.localdomain ip=192.168.50.20
-      /opt/puppetlabs/bin/puppet resource host replica.localdomain ip=192.168.50.21
       echo '*' > /etc/puppetlabs/puppet/autosign.conf
+      # PE needs two runs to be fully initialized
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
+      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
+      echo puppet2018 | /opt/puppetlabs/bin/puppet-access login --username admin --lifetime 0
+      /opt/puppetlabs/bin/puppet-code deploy --all
     SHELL
   end
 
@@ -69,19 +83,15 @@ EOF
 
     node.vm.provider "virtualbox" do |vb|
       vb.name   = "replica"
-      vb.memory = "4096"
+      vb.memory = "6144"
       vb.cpus   = "2"
     end
 
-    node.vm.provision "shell", run: "once", inline: <<-SHELL
+    node.vm.provision "shell", inline: <<-SHELL
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
-      yum -y install http://yum.puppet.com/puppet5/el/7/x86_64/puppet-agent-5.3.1-1.el7.x86_64.rpm
-      /opt/puppetlabs/bin/puppet resource host primary.localdomain ip=192.168.50.20
-      /opt/puppetlabs/bin/puppet resource host replica.localdomain ip=192.168.50.21
-      /opt/puppetlabs/bin/puppet config set server primary.localdomain --section agent
-      curl -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- --puppet-service-ensure stopped
+      curl -sS -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- --puppet-service-ensure stopped
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose --waitforcert 60
     SHELL
   end
