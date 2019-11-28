@@ -51,13 +51,14 @@ Vagrant.configure(2) do |config|
       yum install -y git
       cd /root
       git clone https://github.com/glarizza/pe_curl_requests.git
-      DOWNLOAD_VERSION=2018.1.9 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
-      tar xf puppet-enterprise-2018.1.9-el-7-x86_64.tar.gz
-      cd puppet-enterprise-2018.1.9-el-7-x86_64
+      DOWNLOAD_VERSION=2018.1.11 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
+      tar xf puppet-enterprise-2018.1.11-el-7-x86_64.tar.gz
+      cd puppet-enterprise-2018.1.11-el-7-x86_64
       cat <<-EOF > pe.conf
 {
   "console_admin_password": "puppet2018"
   "pe_install::disable_mco": false
+  "pe_repo::enable_bulk_pluginsync": false
   "puppet_enterprise::send_analytics_data": false
   "puppet_enterprise::ssl_protocols": ["TLSv1.2"]
   "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
