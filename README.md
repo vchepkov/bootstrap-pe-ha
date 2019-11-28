@@ -6,6 +6,5 @@
 vagrant up primary
 vagrant up replica
 vagrant ssh primary
-sudo -i
-/vagrant/bin/ha.sh
+sudo /vagrant/bin/ha.sh
 ```
