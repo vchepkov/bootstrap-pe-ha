@@ -73,7 +73,7 @@ EOF
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
       echo puppet2018 | /opt/puppetlabs/bin/puppet-access login --username admin --lifetime 0
-      /opt/puppetlabs/bin/puppet-code deploy --all
+      /opt/puppetlabs/bin/puppet-code deploy production --wait
     SHELL
   end
 
