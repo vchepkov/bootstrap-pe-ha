@@ -62,13 +62,14 @@ Vagrant.configure(2) do |config|
   "puppet_enterprise::send_analytics_data": false
   "puppet_enterprise::ssl_protocols": ["TLSv1.2"]
   "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
+  "puppet_enterprise::profile::console::display_local_time": true
   "puppet_enterprise::profile::master::code_manager_auto_configure": true
   "puppet_enterprise::profile::master::r10k_remote": "https://github.com/vchepkov/bootstrap-pe-ha.git"
   "puppet_enterprise::profile::master::check_for_updates": false
 }
 EOF
       ./puppet-enterprise-installer -y -c pe.conf
-      echo '*' > /etc/puppetlabs/puppet/autosign.conf
+      echo 'replica.localdomain' > /etc/puppetlabs/puppet/autosign.conf
       # PE needs two runs to be fully initialized
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose

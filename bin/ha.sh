@@ -8,4 +8,5 @@ puppet infrastructure provision replica replica.localdomain
 puppet infrastructure status --host replica.localdomain
 puppet infrastructure enable replica replica.localdomain --topology mono --yes
 puppet infrastructure status
+puppet infrastructure tune --local --pe_conf
 puppet task run service name=puppet action=start -n primary.localdomain,replica.localdomain
