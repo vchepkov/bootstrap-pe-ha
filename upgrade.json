@@ -1,0 +1,6 @@
+{
+  "version": "2018.1.13",
+  "master_host": "primary.localdomain",
+  "master_replica_host": "replica.localdomain",
+  "stagingdir": "/opt/staging"
+}
