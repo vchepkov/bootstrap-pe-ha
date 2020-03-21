@@ -25,6 +25,9 @@ Vagrant.configure(2) do |config|
     h.add_host '192.168.50.21', ['replica.localdomain', 'replica']
   end
 
+  # Facter is trying to connect to AWS metadata
+  config.vm.provision :shell, inline: "/sbin/ip route add unreachable 169.254.0.0/16", run: 'always'
+
   config.vm.provider :virtualbox do |vb|
     vb.auto_nat_dns_proxy = false
     vb.default_nic_type = "virtio"
