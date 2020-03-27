@@ -14,6 +14,9 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
+  version  = ENV['VERSION'] || '2018.1.12'
+  platform = 'el-7-x86_64'
+
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box      = "centos/7"
@@ -51,19 +54,19 @@ Vagrant.configure(2) do |config|
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
-      yum install -y git
-      cd /root
-      git clone https://github.com/glarizza/pe_curl_requests.git
-      DOWNLOAD_VERSION=2018.1.12 pe_curl_requests/installer/download_pe_tarball.sh 2>/dev/null
-      tar xf puppet-enterprise-2018.1.12-el-7-x86_64.tar.gz
-      cd puppet-enterprise-2018.1.12-el-7-x86_64
+      cd /tmp
+      tarball_filename=puppet-enterprise-#{version}-#{platform}.tar.gz
+      echo Downloading installer >&2
+      curl -sS -JLO https://s3.amazonaws.com/pe-builds/released/#{version}/${tarball_filename}
+      tar xf $tarball_filename
+      cd puppet-enterprise-#{version}-#{platform}
       cat <<-EOF > pe.conf
 {
   "console_admin_password": "puppet2018"
   "pe_install::disable_mco": false
+  "pe_install::puppet_master_dnsaltnames": ["puppet.localdomain"]
   "pe_repo::enable_bulk_pluginsync": false
   "puppet_enterprise::send_analytics_data": false
-  "puppet_enterprise::ssl_protocols": ["TLSv1.2"]
   "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
   "puppet_enterprise::profile::console::display_local_time": true
   "puppet_enterprise::profile::master::code_manager_auto_configure": true
@@ -72,6 +75,7 @@ Vagrant.configure(2) do |config|
 }
 EOF
       ./puppet-enterprise-installer -y -c pe.conf
+      /bin/systemctl stop puppet.service
       echo 'replica.localdomain' > /etc/puppetlabs/puppet/autosign.conf
       # PE needs two runs to be fully initialized
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
