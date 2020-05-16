@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  version  = ENV['VERSION'] || '2018.1.12'
+  version  = ENV['VERSION'] || '2018.1.15'
   platform = 'el-7-x86_64'
 
   # Every Vagrant development environment requires a box. You can search for
@@ -66,6 +66,7 @@ Vagrant.configure(2) do |config|
   "pe_install::disable_mco": false
   "pe_install::puppet_master_dnsaltnames": ["puppet.localdomain"]
   "pe_repo::enable_bulk_pluginsync": false
+  "pe_repo::enable_windows_bulk_pluginsync": false
   "puppet_enterprise::send_analytics_data": false
   "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
   "puppet_enterprise::profile::console::display_local_time": true
