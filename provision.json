@@ -1,0 +1,14 @@
+{
+  "console_password": "puppet2018",
+  "dns_alt_names": ["puppet.localdomain"],
+  "pe_conf_data": {
+    "pe_install::disable_mco": false,
+    "puppet_enterprise::send_analytics_data": false,
+    "puppet_enterprise::profile::console::display_local_time": true,
+    "puppet_enterprise::profile::master::check_for_updates": false
+  },
+  "version": "2018.1.15",
+  "master_host": "primary.localdomain",
+  "master_replica_host": "replica.localdomain",
+  "stagingdir": "/opt/staging"
+}
