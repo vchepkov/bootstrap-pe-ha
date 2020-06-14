@@ -54,6 +54,13 @@ Vagrant.configure(2) do |config|
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
+      mkdir -p /etc/puppetlabs/puppet
+      cat <<-EOF > /etc/puppetlabs/puppet/csr_attributes.yaml
+---
+extension_requests:
+  1.3.6.1.4.1.34380.1.1.9812: puppet/master
+  1.3.6.1.4.1.34380.1.1.9813: A
+EOF
       cd /tmp
       tarball_filename=puppet-enterprise-#{version}-#{platform}.tar.gz
       echo Downloading installer >&2
@@ -90,6 +97,7 @@ EOF
   config.vm.define "replica", autostart: false do |node|
     node.vm.hostname = "replica.localdomain"
     node.vm.network "private_network", ip: "192.168.50.21"
+    node.vm.network "forwarded_port", guest: 443, host: 4443
 
     node.vm.provider "virtualbox" do |vb|
       vb.name   = "replica"
@@ -101,7 +109,7 @@ EOF
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
-      curl -sS -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- --puppet-service-ensure stopped
+      curl -sS -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- main:dns_alt_names=puppet.localdomain extension_requests:1.3.6.1.4.1.34380.1.1.9812=puppet/master extension_requests:1.3.6.1.4.1.34380.1.1.9813=B --puppet-service-ensure stopped
       /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose --waitforcert 60
     SHELL
   end
