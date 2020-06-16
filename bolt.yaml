@@ -1,7 +1,0 @@
----
-save-rerun: false
-
-ssh:
-  host-key-check: false
-  user: vagrant
-  run-as: root

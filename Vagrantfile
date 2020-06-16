@@ -14,13 +14,10 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  version  = ENV['VERSION'] || '2018.1.15'
-  platform = 'el-7-x86_64'
-
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box      = "centos/7"
-  config.vm.synced_folder ".", "/vagrant"
+  config.vm.box      = "centos/8"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provision :hosts do |h|
     h.add_localhost_hostnames = false
@@ -30,6 +27,12 @@ Vagrant.configure(2) do |config|
 
   # Facter is trying to connect to AWS metadata
   config.vm.provision :shell, inline: "/sbin/ip route add unreachable 169.254.0.0/16", run: 'always'
+
+  config.vm.provision :shell, inline: <<-SHELL
+      systemctl restart rsyslog
+      systemctl mask firewalld
+      systemctl stop firewalld
+  SHELL
 
   config.vm.provider :virtualbox do |vb|
     vb.auto_nat_dns_proxy = false
@@ -49,52 +52,10 @@ Vagrant.configure(2) do |config|
       vb.memory = "6144"
       vb.cpus   = "2"
     end
-
-    master.vm.provision "shell", inline: <<-SHELL
-      systemctl restart rsyslog
-      systemctl mask firewalld
-      systemctl stop firewalld
-      mkdir -p /etc/puppetlabs/puppet
-      cat <<-EOF > /etc/puppetlabs/puppet/csr_attributes.yaml
----
-extension_requests:
-  1.3.6.1.4.1.34380.1.1.9812: puppet/master
-  1.3.6.1.4.1.34380.1.1.9813: A
-EOF
-      cd /tmp
-      tarball_filename=puppet-enterprise-#{version}-#{platform}.tar.gz
-      echo Downloading installer >&2
-      curl -sS -JLO https://s3.amazonaws.com/pe-builds/released/#{version}/${tarball_filename}
-      tar xf $tarball_filename
-      cd puppet-enterprise-#{version}-#{platform}
-      cat <<-EOF > pe.conf
-{
-  "console_admin_password": "puppet2018"
-  "pe_install::disable_mco": false
-  "pe_install::puppet_master_dnsaltnames": ["puppet.localdomain"]
-  "pe_repo::enable_bulk_pluginsync": false
-  "pe_repo::enable_windows_bulk_pluginsync": false
-  "puppet_enterprise::send_analytics_data": false
-  "puppet_enterprise::puppet_master_host": "%{::trusted.certname}"
-  "puppet_enterprise::profile::console::display_local_time": true
-  "puppet_enterprise::profile::master::code_manager_auto_configure": true
-  "puppet_enterprise::profile::master::r10k_remote": "https://github.com/vchepkov/bootstrap-pe-ha.git"
-  "puppet_enterprise::profile::master::check_for_updates": false
-}
-EOF
-      ./puppet-enterprise-installer -y -c pe.conf
-      /bin/systemctl stop puppet.service
-      echo 'replica.localdomain' > /etc/puppetlabs/puppet/autosign.conf
-      # PE needs two runs to be fully initialized
-      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
-      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose
-      echo puppet2018 | /opt/puppetlabs/bin/puppet-access login --username admin --lifetime 0
-      /opt/puppetlabs/bin/puppet-code deploy production --wait
-    SHELL
   end
 
   # Replica
-  config.vm.define "replica", autostart: false do |node|
+  config.vm.define "replica" do |node|
     node.vm.hostname = "replica.localdomain"
     node.vm.network "private_network", ip: "192.168.50.21"
     node.vm.network "forwarded_port", guest: 443, host: 4443
@@ -104,13 +65,5 @@ EOF
       vb.memory = "6144"
       vb.cpus   = "2"
     end
-
-    node.vm.provision "shell", inline: <<-SHELL
-      systemctl restart rsyslog
-      systemctl mask firewalld
-      systemctl stop firewalld
-      curl -sS -k https://primary.localdomain:8140/packages/current/install.bash | bash -s -- main:dns_alt_names=puppet.localdomain extension_requests:1.3.6.1.4.1.34380.1.1.9812=puppet/master extension_requests:1.3.6.1.4.1.34380.1.1.9813=B --puppet-service-ensure stopped
-      /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --no-splay --show_diff --verbose --waitforcert 60
-    SHELL
   end
 end

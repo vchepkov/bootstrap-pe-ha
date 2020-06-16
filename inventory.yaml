@@ -1,14 +1,18 @@
 ---
+config:
+  ssh:
+    host-key-check: false
+    user: vagrant
+    run-as: root
+
 targets:
   - name: primary.localdomain
     uri: 192.168.50.20
     config:
-      transport: ssh
       ssh:
         private-key: .vagrant/machines/primary/virtualbox/private_key
   - name: replica.localdomain
     uri: 192.168.50.21
     config:
-      transport: ssh
       ssh:
         private-key: .vagrant/machines/replica/virtualbox/private_key
