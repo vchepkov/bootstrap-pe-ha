@@ -1,6 +1,6 @@
-# Workaround for bug PE-27066
-# Master's catalog can't be compiled by replica
-if $trusted['certname'] == 'primary.localdomain' {
+# Workaround for bug ENTERPRISE-1284
+# Master's catalog shouldn't be compiled by replica before PE2019
+if $trusted['certname'] == 'primary.localdomain' and versioncmp($facts['pe_server_version'], '2019') < 0 {
   node_group { 'PE Primary Master Agent':
     ensure  => 'present',
     classes => {
