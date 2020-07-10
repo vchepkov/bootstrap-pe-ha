@@ -1,0 +1,14 @@
+{
+  "console_password": "puppet_ha",
+  "version": "2019.8.0",
+  "master_host": "primary.localdomain",
+  "master_replica_host": "replica.localdomain",
+  "dns_alt_names": ["puppet.localdomain"],
+  "compiler_pool_address": "puppet.localdomain",
+  "pe_conf_data": {
+    "puppet_enterprise::send_analytics_data": false,
+    "puppet_enterprise::profile::console::display_local_time": true,
+    "puppet_enterprise::profile::master::check_for_updates": false
+  },
+  "stagingdir": "/opt/staging"
+}

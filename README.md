@@ -3,8 +3,6 @@
 ## Quick Start
 
 ```
-vagrant up primary
-vagrant up replica
-vagrant ssh primary
-sudo /vagrant/bin/ha.sh
+vagrant up
+./bin/ha.sh
 ```
