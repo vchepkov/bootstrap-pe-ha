@@ -7,11 +7,13 @@ config:
 
 targets:
   - name: primary.localdomain
+    alias: primary
     uri: 192.168.50.20
     config:
       ssh:
         private-key: .vagrant/machines/primary/virtualbox/private_key
   - name: replica.localdomain
+    alias: replica
     uri: 192.168.50.21
     config:
       ssh:
