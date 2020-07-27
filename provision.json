@@ -6,9 +6,13 @@
   "dns_alt_names": ["puppet.localdomain"],
   "compiler_pool_address": "puppet.localdomain",
   "pe_conf_data": {
+    "pe_repo::enable_bulk_pluginsync": false,
+    "pe_repo::enable_windows_bulk_pluginsync": false,
     "puppet_enterprise::send_analytics_data": false,
     "puppet_enterprise::profile::console::display_local_time": true,
-    "puppet_enterprise::profile::master::check_for_updates": false
+    "puppet_enterprise::profile::master::check_for_updates": false,
+    "puppet_enterprise::profile::puppetdb::node_purge_ttl": "1d",
+    "puppet_enterprise::profile::puppetdb::node_ttl": "0s"
   },
   "stagingdir": "/opt/staging"
 }
