@@ -1,5 +1,5 @@
 {
-  "version": "2019.8.0",
+  "version": "2019.8.1",
   "master_host": "primary.localdomain",
   "master_replica_host": "replica.localdomain",
   "stagingdir": "/opt/staging"
