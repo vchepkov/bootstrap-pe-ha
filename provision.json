@@ -4,7 +4,6 @@
   "master_host": "primary.localdomain",
   "master_replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
-  "compiler_pool_address": "puppet.localdomain",
   "pe_conf_data": {
     "pe_repo::enable_bulk_pluginsync": false,
     "pe_repo::enable_windows_bulk_pluginsync": false,
