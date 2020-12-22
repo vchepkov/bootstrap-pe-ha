@@ -14,8 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  config.vm.box = "oraclelinux/8"
-  config.vm.box_url = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/8.json"
+  config.vm.box = "centos/8"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
