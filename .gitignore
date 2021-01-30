@@ -1,3 +1,5 @@
 .vagrant
 .resource_types
-modules
+.rerun.json
+.plan_cache.json
+.modules

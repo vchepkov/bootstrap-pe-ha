@@ -1,4 +1,4 @@
 #!/bin/sh
 
-bolt puppetfile install
+bolt module install --no-resolve
 bolt plan run peadm::upgrade --params @upgrade.json

@@ -1,5 +1,7 @@
 ---
 config:
+  local:
+    bundled-ruby: true
   ssh:
     host-key-check: false
     user: vagrant
