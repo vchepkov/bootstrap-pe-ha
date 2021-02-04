@@ -2,4 +2,5 @@
 .resource_types
 .rerun.json
 .plan_cache.json
-.modules
+.modules/
+modules/
