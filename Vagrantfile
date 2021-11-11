@@ -20,8 +20,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision :hosts do |h|
     h.add_localhost_hostnames = false
-    h.add_host '192.168.50.20', ['primary.localdomain', 'primary']
-    h.add_host '192.168.50.21', ['replica.localdomain', 'replica']
+    h.add_host '192.168.56.20', ['primary.localdomain', 'primary']
+    h.add_host '192.168.56.21', ['replica.localdomain', 'replica']
   end
 
   # Facter is trying to connect to AWS metadata
@@ -43,7 +43,7 @@ Vagrant.configure(2) do |config|
   # Master
   config.vm.define "primary", primary: true do |master|
     master.vm.hostname = "primary.localdomain"
-    master.vm.network "private_network", ip: "192.168.50.20"
+    master.vm.network "private_network", ip: "192.168.56.20"
     master.vm.network "forwarded_port", guest: 443, host: 8443
 
     master.vm.provider "virtualbox" do |vb|
@@ -56,7 +56,7 @@ Vagrant.configure(2) do |config|
   # Replica
   config.vm.define "replica" do |node|
     node.vm.hostname = "replica.localdomain"
-    node.vm.network "private_network", ip: "192.168.50.21"
+    node.vm.network "private_network", ip: "192.168.56.21"
     node.vm.network "forwarded_port", guest: 443, host: 4443
 
     node.vm.provider "virtualbox" do |vb|
