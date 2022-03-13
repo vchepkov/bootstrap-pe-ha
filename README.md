@@ -4,5 +4,5 @@
 
 ```
 vagrant up
-./bin/provision.sh
+./bin/install.sh
 ```

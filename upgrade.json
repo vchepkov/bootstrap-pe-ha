@@ -1,6 +1,6 @@
 {
-  "version": "2021.4.0",
-  "master_host": "primary.localdomain",
-  "master_replica_host": "replica.localdomain",
+  "version": "2021.5.0",
+  "primary_host": "primary.localdomain",
+  "replica_host": "replica.localdomain",
   "stagingdir": "/opt/staging"
 }
