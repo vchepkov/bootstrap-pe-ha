@@ -1,7 +1,8 @@
-.vagrant
-.resource_types
-.rerun.json
-.plan_cache.json
-.task_cache.json
 .modules/
+.plan_cache.json
+.rerun.json
+.resource_types
+.task_cache.json
+.vagrant
+Puppetfile
 modules/

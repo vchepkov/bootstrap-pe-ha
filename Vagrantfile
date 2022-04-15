@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  config.vm.box = "rockylinux/8"
+  config.vm.box = "almalinux/8"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
@@ -40,13 +40,13 @@ Vagrant.configure(2) do |config|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
   end
 
-  # Master
-  config.vm.define "primary", primary: true do |master|
-    master.vm.hostname = "primary.localdomain"
-    master.vm.network "private_network", ip: "192.168.56.20"
-    master.vm.network "forwarded_port", guest: 443, host: 8443
+  # Primary
+  config.vm.define "primary", primary: true do |primary|
+    primary.vm.hostname = "primary.localdomain"
+    primary.vm.network "private_network", ip: "192.168.56.20"
+    primary.vm.network "forwarded_port", guest: 443, host: 8443
 
-    master.vm.provider "virtualbox" do |vb|
+    primary.vm.provider "virtualbox" do |vb|
       vb.name   = "primary"
       vb.memory = "6144"
       vb.cpus   = "2"

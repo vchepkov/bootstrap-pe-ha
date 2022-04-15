@@ -1,8 +1,8 @@
 {
   "console_password": "puppet_ha",
   "version": "2019.8.10",
-  "master_host": "primary.localdomain",
-  "master_replica_host": "replica.localdomain",
+  "primary_host": "primary.localdomain",
+  "replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
   "pe_conf_data": {
     "pe_repo::enable_bulk_pluginsync": false,
