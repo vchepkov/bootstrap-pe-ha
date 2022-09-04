@@ -1,6 +1,7 @@
 {
   "console_password": "puppet_ha",
-  "version": "2019.8.12",
+  "version": "2021.7.0",
+  "permit_unsafe_versions": true,
   "primary_host": "primary.localdomain",
   "replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
