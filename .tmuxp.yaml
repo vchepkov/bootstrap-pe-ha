@@ -1,10 +1,14 @@
-session_name: pe_ha
+session_name: pe-ha
 windows:
   - window_name: PE Bootstrap
     layout: tiled
     panes:
       - blank:
         focus: true
-      - vagrant ssh primary
+      - 
+        sleep_before: 2
+        shell_command: vagrant ssh primary
       - vagrant ssh primary -c 'sudo tail -f /var/log/messages' 
-      - vagrant ssh replica -c 'sudo tail -f /var/log/messages'
+      - 
+        sleep_before: 3
+        shell_command: vagrant ssh replica -c 'sudo tail -f /var/log/messages'
