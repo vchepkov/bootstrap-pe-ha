@@ -1,7 +1,5 @@
 # apply PE customizations
-plan pe_ha::customize (
-  Boolean $clean_old_packages = false,
-) {
+plan pe_ha::customize {
   run_task('service', ['primary.localdomain','replica.localdomain'],
     name   => 'puppet',
     action => 'stop'
@@ -15,8 +13,4 @@ plan pe_ha::customize (
     name   => 'puppet',
     action => 'start'
   )
-
-  if $clean_old_packages {
-    run_command('/opt/puppetlabs/bin/puppet infrastructure run remove_old_pe_packages', 'primary.localdomain')
-  }
 }
