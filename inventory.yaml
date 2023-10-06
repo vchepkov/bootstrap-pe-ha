@@ -6,6 +6,7 @@ config:
     host-key-check: false
     user: vagrant
     run-as: root
+    native-ssh: true
 
 targets:
   - name: primary.localdomain

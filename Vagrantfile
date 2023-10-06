@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  config.vm.box = "almalinux/8"
+  config.vm.box = "almalinux/9"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
@@ -31,6 +31,7 @@ Vagrant.configure(2) do |config|
       systemctl restart rsyslog
       systemctl mask firewalld
       systemctl stop firewalld
+      dnf install -y glibc-langpack-en
   SHELL
 
   config.vm.provider :virtualbox do |vb|
