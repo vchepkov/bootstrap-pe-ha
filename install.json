@@ -1,7 +1,7 @@
 {
   "console_password": "puppet_ha",
   "token_lifetime": "10y",
-  "version": "2021.7.5",
+  "version": "2021.7.6",
   "primary_host": "primary.localdomain",
   "replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
@@ -11,7 +11,6 @@
     "puppet_enterprise::send_analytics_data": false,
     "puppet_enterprise::profile::console::display_local_time": true,
     "puppet_enterprise::profile::master::check_for_updates": false,
-    "puppet_enterprise::profile::master::versioned_deploys": true,
     "puppet_enterprise::profile::puppetdb::node_purge_ttl": "1d",
     "puppet_enterprise::profile::puppetdb::node_ttl": "0s"
   },
