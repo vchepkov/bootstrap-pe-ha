@@ -1,7 +1,7 @@
 {
   "console_password": "puppet_ha",
   "token_lifetime": "10y",
-  "version": "2021.7.6",
+  "version": "2021.7.7",
   "primary_host": "primary.localdomain",
   "replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
