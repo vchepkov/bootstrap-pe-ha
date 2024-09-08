@@ -14,6 +14,9 @@
     "puppet_enterprise::profile::puppetdb::node_purge_ttl": "1d",
     "puppet_enterprise::profile::puppetdb::node_ttl": "0s"
   },
+  "r10k_known_hosts": [
+    { "name": "github.com", "type": "ssh-ed25519", "key": "AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" }
+  ],
   "final_agent_state": "stopped",
   "stagingdir": "/opt/staging"
 }
