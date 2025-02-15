@@ -1,5 +1,5 @@
 {
-  "version": "2025.0.0",
+  "version": "2023.8.1",
   "primary_host": "primary.localdomain",
   "replica_host": "replica.localdomain",
   "final_agent_state": "stopped",
