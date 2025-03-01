@@ -3,3 +3,4 @@
 bolt module install --force
 bolt plan run peadm::install --params @install.json
 bolt plan run pe_ha::customize
+bolt task run service action=start name=puppet -t all

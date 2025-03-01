@@ -2,6 +2,6 @@
 
 bolt module install --force
 bolt plan run peadm::upgrade --params @upgrade.json
-# broken
-# bolt plan run pe_ha::customize
+bolt plan run pe_ha::customize
 bolt command run '/opt/puppetlabs/bin/puppet infrastructure run remove_old_pe_packages' -t primary.localdomain
+bolt task run service action=start name=puppet -t all
