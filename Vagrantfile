@@ -55,12 +55,11 @@ Vagrant.configure(2) do |config|
   end
 
   # Replica
-  config.vm.define "replica" do |node|
-    node.vm.hostname = "replica.localdomain"
-    node.vm.network "private_network", ip: "192.168.56.21"
-    node.vm.network "forwarded_port", guest: 443, host: 4443
+  config.vm.define "replica" do |replica|
+    replica.vm.hostname = "replica.localdomain"
+    replica.vm.network "private_network", ip: "192.168.56.21"
 
-    node.vm.provider "virtualbox" do |vb|
+    replica.vm.provider "virtualbox" do |vb|
       vb.name   = "replica"
       vb.memory = "8192"
       vb.cpus   = "2"
