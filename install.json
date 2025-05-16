@@ -1,7 +1,7 @@
 {
   "console_password": "Puppet_ha2023",
   "token_lifetime": "10y",
-  "version": "2023.8.2",
+  "version": "2023.8.3",
   "primary_host": "primary.localdomain",
   "replica_host": "replica.localdomain",
   "dns_alt_names": ["puppet.localdomain"],
@@ -12,7 +12,6 @@
     "puppet_enterprise::profile::certificate_authority::auto_renewal_cert_ttl": "5y",
     "puppet_enterprise::profile::console::display_local_time": true,
     "puppet_enterprise::profile::master::check_for_updates": false,
-    "puppet_enterprise::profile::orchestrator::plan_runner_active": false,
     "puppet_enterprise::profile::puppetdb::node_purge_ttl": "1d",
     "puppet_enterprise::profile::puppetdb::node_ttl": "0s"
   },
