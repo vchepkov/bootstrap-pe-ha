@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  config.vm.box = "almalinux/9"
+  config.vm.box = "almalinux/10"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
