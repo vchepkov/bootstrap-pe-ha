@@ -2,4 +2,4 @@
 name: pe_ha
 modules:
 - git: https://github.com/vchepkov/puppetlabs-peadm.git
-  ref: custom
+  ref: custom2
