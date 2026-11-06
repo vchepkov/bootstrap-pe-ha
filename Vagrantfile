@@ -52,7 +52,7 @@ Vagrant.configure(2) do |config|
 
     primary.vm.provider "virtualbox" do |vb|
       vb.name   = "primary"
-      vb.memory = "8192"
+      vb.memory = "6144"
       vb.cpus   = "2"
     end
   end
@@ -64,7 +64,7 @@ Vagrant.configure(2) do |config|
 
     replica.vm.provider "virtualbox" do |vb|
       vb.name   = "replica"
-      vb.memory = "8192"
+      vb.memory = "6144"
       vb.cpus   = "2"
     end
   end
