@@ -14,9 +14,9 @@ Vagrant.configure(2) do |config|
 
   config.vagrant.plugins = "vagrant-hosts"
 
-  config.vm.box = "almalinux/10"
+  config.vm.box = "almalinux/9"
   # Preview catalog replacing HCP Vagrant; URL may change (AlmaLinux/cloud-images#376).
-  config.vm.box_url = "https://almalinux-cloud.s3.us-east-1.amazonaws.com/vagrant/almalinux/10"
+  config.vm.box_url = "https://almalinux-cloud.s3.us-east-1.amazonaws.com/vagrant/almalinux/9"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
